@@ -1,8 +1,8 @@
 package app
 
 import (
-	"burger-shop.tj/pkg/crud/services/burgers"
 	"errors"
+	"github.com/JAbduvohidov/burger-shop.tj/pkg/crud/services/burgers"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"net/http"
 )

@@ -1,4 +1,4 @@
-module burger-shop.tj
+module github.com/JAbduvohidov/burger-shop.tj
 
 go 1.13
 

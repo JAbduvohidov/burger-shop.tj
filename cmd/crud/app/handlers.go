@@ -1,7 +1,7 @@
 package app
 
 import (
-	"burger-shop.tj/pkg/crud/models"
+	"github.com/JAbduvohidov/burger-shop.tj/pkg/crud/models"
 	"html/template"
 	"io/ioutil"
 	"log"

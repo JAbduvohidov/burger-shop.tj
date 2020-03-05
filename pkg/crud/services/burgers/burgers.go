@@ -1,9 +1,10 @@
 package burgers
 
 import (
-	"burger-shop.tj/pkg/crud/models"
 	"context"
 	"errors"
+	"github.com/JAbduvohidov/burger-shop.tj/pkg/crud/models"
+	"github.com/JAbduvohidov/burger-shop.tj/pkg/crud/services"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
@@ -25,7 +26,7 @@ func (service *BurgersSvc) BurgersList() (list []models.Burger, err error) {
 		return nil, err // TODO: wrap to specific error
 	}
 	defer conn.Release()
-	rows, err := conn.Query(context.Background(), "SELECT id, name, price, description FROM burgers WHERE removed = FALSE")
+	rows, err := conn.Query(context.Background(), services.GetBurgers)
 	if err != nil {
 		return nil, err // TODO: wrap to specific error
 	}
@@ -53,7 +54,7 @@ func (service *BurgersSvc) Save(model models.Burger) (err error) {
 		return err // TODO: wrap to specific error
 	}
 	defer conn.Release()
-	_, err = conn.Exec(context.Background(), "INSERT INTO burgers (name, price, description) VALUES ($1, $2, $3)", model.Name, model.Price, model.Description)
+	_, err = conn.Exec(context.Background(), services.SaveBurger, model.Name, model.Price, model.Description)
 	if err != nil {
 		return err
 	}
@@ -66,7 +67,7 @@ func (service *BurgersSvc) RemoveById(id int) (err error) {
 		return err // TODO: wrap to specific error
 	}
 	defer conn.Release()
-	_, err = conn.Exec(context.Background(), "UPDATE burgers SET removed = TRUE WHERE id = $1", id)
+	_, err = conn.Exec(context.Background(), services.RemoveBurger, id)
 	if err != nil {
 		return err
 	}
