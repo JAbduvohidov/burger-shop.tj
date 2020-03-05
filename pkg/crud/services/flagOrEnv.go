@@ -3,7 +3,7 @@ package services
 import "os"
 
 func FlagOrEnv(fl *string, envName string) (value string, ok bool) {
-	if fl == nil {
+	if fl != nil {
 		return *fl, true
 	}
 

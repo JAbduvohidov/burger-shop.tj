@@ -20,8 +20,8 @@ const (
 )
 
 var (
-	hostF = flag.String("host", "0.0.0.0", "Server host")
-	portF = flag.String("port", "9999", "Server port")
+	hostF = flag.String("host", "", "Server host")
+	portF = flag.String("port", "", "Server port")
 	dsnF  = flag.String("dsn", "", "Postgres DSN")
 )
 
