@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        * {
+            font-family: "Trebuchet MS", sans-serif;
+            margin: 0;
+            padding: 0;
+            color: black;
+        }
+
+        *::selection {
+            background: green;
+            color: white;
+        }
+
+        .inputs-container {
+            position: fixed;
+            float: left;
+            height: 100vh;
+            padding: 20px;
+            width: 350px;
+            background: white;
+            box-shadow: 2px -5px 10px -5px black;
+        }
+
+        .burgers-container {
+            float: right;
+            padding-left: 20px;
+            padding-right: 20px;
+            height: 100vh;
+            width: calc(100vw - 430px);
+            background: whitesmoke;
+            overflow-y: scroll;
+        }
+
+        .burgers-container::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .burgers-container::-webkit-scrollbar-track {
+            background: whitesmoke;
+        }
+
+        .burgers-container::-webkit-scrollbar-thumb {
+            border-radius: 5px;
+            background: #6e6e6e;
+        }
+
+        .burger {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            background: white;
+            padding: 20px;
+            height: auto;
+            min-width: 400px;
+            max-width: 800px;
+            max-height: 500px;
+            border-radius: 10px;
+            border: 1px solid gray;
+        }
+
+        .burger > ul {
+            list-style: none;
+        }
+
+        .input {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding: 10px;
+            display: block;
+            min-width: 320px;
+            min-height: 25px;
+            max-width: 320px;
+            max-height: 200px;
+            font-size: 18px;
+            border: 0;
+            border-radius: 5px;
+            outline: 0;
+            box-shadow: 0 0 5px -2px black;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px;
+            min-width: 100px;
+            min-height: 25px;
+            font-size: 18px;
+            border: 0;
+            border-radius: 20px;
+            outline: 0;
+            background: white;
+            box-shadow: 0 0 5px -2px black;
+            transition: 0.2s;
+        }
+
+        .rm {
+            margin-top: -10px;
+            float: right;
+            box-shadow: 0 0 0 0 black;
+            border: 1px solid lightgray;
+        }
+
+        .button:hover {
+            background: darkgrey;
+            box-shadow: 0 0 0 0 black;
+        }
+    </style>
+    <title>{{.Title}}</title>
+</head>
+<body>
+
+<div class="inputs-container">
+    <form action=""></form>
+    <h1>Add your burger here</h1>
+    <form action="/burgers/save" method="POST">
+        <input class="input" type="hidden" name="action" value="save">
+        <input class="input" type="text" placeholder="Name" name="name">
+        <input class="input" type="number" placeholder="Price" name="price">
+        <textarea class="input" placeholder="Description" name="description"></textarea>
+        <button class="button">Save</button>
+    </form>
+</div>
+
+
+<div class="burgers-container">
+    {{range $_, $val := .Burgers}}
+        <div class="burger">
+            <ul>
+                <li>
+                    <form action="/burgers/remove" method="POST">
+                        <input type="hidden" name="action" value="remove">
+                        <input type="hidden" name="id" value="{{$val.Id}}">
+                        <a>{{$val.Name}}</a>
+                        <a>{{$val.Price}}</a>
+                        <a>{{$val.Description}}</a>
+                        <button class="button rm">Remove</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    {{end}}
+
+</div>
+
+</body>
+</html>
