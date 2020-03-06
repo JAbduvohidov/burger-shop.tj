@@ -4,19 +4,13 @@ import (
 	"context"
 	"flag"
 	"github.com/JAbduvohidov/burger-shop.tj/cmd/crud/app"
-	"github.com/JAbduvohidov/burger-shop.tj/pkg/crud/services"
 	"github.com/JAbduvohidov/burger-shop.tj/pkg/crud/services/burgers"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"log"
 	"net"
 	"net/http"
+	"os"
 	"path/filepath"
-)
-
-const (
-	ENV_HOST = "HOST"
-	ENV_PORT = "PORT"
-	ENV_DSN  = "DATABASE_URL"
 )
 
 var (
@@ -27,29 +21,17 @@ var (
 
 func main() {
 	flag.Parse()
-	log.Println("host setting to connect")
-	host, ok := services.FlagOrEnv(hostF, ENV_HOST)
+	port, ok := os.LookupEnv("PORT")
 	if !ok {
-		log.Panic("can't host setting")
-	}
-	log.Println("get port to connect")
-	port, ok := services.FlagOrEnv(portF, ENV_PORT)
-	if !ok {
-		log.Panic("can't port setting")
+		port = *portF
 	}
 	log.Println("set address to connect")
-	addr := net.JoinHostPort(host, port)
+	addr := net.JoinHostPort(*hostF, port)
 	log.Printf("address to connect: %s", addr)
 
-	log.Println("set database to connect")
-	dsn, ok := services.FlagOrEnv(dsnF, ENV_DSN)
-	if !ok {
-		log.Panic("unable to get db url")
-	}
-
-	log.Printf("try start server on: %s, dbUrl: %s", addr, dsn)
-	start(addr, dsn)
-	log.Printf("server success on: %s, dbUrl: %s", addr, dsn)
+	log.Printf("try start server on: %s, dbUrl: %s", addr, *dsnF)
+	start(addr, *dsnF)
+	log.Printf("server success on: %s, dbUrl: %s", addr, *dsnF)
 }
 
 func start(addr string, dsn string) {
