@@ -20,9 +20,9 @@ const (
 )
 
 var (
-	hostF = flag.String("hostF", "0.0.0.0", "Server hostF")
-	portF = flag.String("portF", "9999", "Server portF")
-	dsnF  = flag.String("dsnF", "postgres://nurzyxgxduryxt:a91147d43b56869a99a0815d324323f5f22071d6dfa17cdd789c93388a392072@ec2-52-86-73-86.compute-1.amazonaws.com:5432/dc1ns5rpr9g4e3", "Postgres DSN")
+	hostF = flag.String("host", "0.0.0.0", "Server host")
+	portF = flag.String("port", "9999", "Server port")
+	dsnF  = flag.String("dsn", "postgres://nurzyxgxduryxt:a91147d43b56869a99a0815d324323f5f22071d6dfa17cdd789c93388a392072@ec2-52-86-73-86.compute-1.amazonaws.com:5432/dc1ns5rpr9g4e3", "Postgres DSN")
 )
 
 func main() {

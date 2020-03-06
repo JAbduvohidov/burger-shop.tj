@@ -3,6 +3,7 @@ package burgers
 import (
 	"context"
 	"errors"
+	errors1 "github.com/JAbduvohidov/burger-shop.tj/pkg/crud/errors"
 	"github.com/JAbduvohidov/burger-shop.tj/pkg/crud/models"
 	"github.com/JAbduvohidov/burger-shop.tj/pkg/crud/services"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -20,15 +21,15 @@ func NewBurgersSvc(pool *pgxpool.Pool) *BurgersSvc {
 }
 
 func (service *BurgersSvc) BurgersList() (list []models.Burger, err error) {
-	list = make([]models.Burger, 0) // TODO: for REST API
+	list = make([]models.Burger, 0)
 	conn, err := service.pool.Acquire(context.Background())
 	if err != nil {
-		return nil, err // TODO: wrap to specific error
+		return nil, errors1.ApiError("can't execute pool: ", err)
 	}
 	defer conn.Release()
 	rows, err := conn.Query(context.Background(), services.GetBurgers)
 	if err != nil {
-		return nil, err // TODO: wrap to specific error
+		return nil, errors1.ApiError("can't query: execute pool", err)
 	}
 	defer rows.Close()
 
@@ -36,7 +37,7 @@ func (service *BurgersSvc) BurgersList() (list []models.Burger, err error) {
 		item := models.Burger{}
 		err := rows.Scan(&item.Id, &item.Name, &item.Price, &item.Description)
 		if err != nil {
-			return nil, err // TODO: wrap to specific error
+			return nil, errors1.ApiError("can't scan row: ", err)
 		}
 		list = append(list, item)
 	}
@@ -51,12 +52,12 @@ func (service *BurgersSvc) BurgersList() (list []models.Burger, err error) {
 func (service *BurgersSvc) Save(model models.Burger) (err error) {
 	conn, err := service.pool.Acquire(context.Background())
 	if err != nil {
-		return err // TODO: wrap to specific error
+		return errors1.ApiError("can't execute pool: ", err)
 	}
 	defer conn.Release()
 	_, err = conn.Exec(context.Background(), services.SaveBurger, model.Name, model.Price, model.Description)
 	if err != nil {
-		return err
+		return errors1.ApiError("can't save burger: ", err)
 	}
 	return nil
 }
@@ -64,12 +65,12 @@ func (service *BurgersSvc) Save(model models.Burger) (err error) {
 func (service *BurgersSvc) RemoveById(id int) (err error) {
 	conn, err := service.pool.Acquire(context.Background())
 	if err != nil {
-		return err // TODO: wrap to specific error
+		return errors1.ApiError("can't execute pool: ", err)
 	}
 	defer conn.Release()
 	_, err = conn.Exec(context.Background(), services.RemoveBurger, id)
 	if err != nil {
-		return err
+		return errors1.ApiError("can't remove burger: ", err)
 	}
 	return nil
 }
