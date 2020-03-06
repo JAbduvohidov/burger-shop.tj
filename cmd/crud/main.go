@@ -27,27 +27,28 @@ var (
 
 func main() {
 	flag.Parse()
-	host, ok := services.FlagOrEnv(hostF, EHost)
+	host, ok := services.FlagOrEnv(*hostF, EHost)
 	if !ok {
 		log.Panic("can't get port")
 	}
-	port, ok := services.FlagOrEnv(portF, EPort)
+
+	port, ok := services.FlagOrEnv(*portF, EPort)
 	if !ok {
 		log.Panic("can't get port")
 	}
+
 	log.Println("set address to connect")
 	addr := net.JoinHostPort(host, port)
 	log.Printf("address to connect: %s", addr)
 
-	dsn, ok := services.FlagOrEnv(dsnF, EDsn)
+	dsn, ok := services.FlagOrEnv(*dsnF, EDsn)
 	if !ok {
 		log.Panic("can't get dsn")
 	}
 
-
-	log.Printf("try start server on: %s, dbUrl: %s", addr, *dsnF)
+	log.Printf("try start server on: %s, dbUrl: %s", addr, dsn)
 	start(addr, dsn)
-	log.Printf("server success on: %s, dbUrl: %s", addr, *dsnF)
+	log.Printf("server success on: %s, dbUrl: %s", addr, dsn)
 }
 
 func start(addr string, dsn string) {
