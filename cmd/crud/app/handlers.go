@@ -28,7 +28,7 @@ func (receiver *server) handleBurgersList() func(http.ResponseWriter, *http.Requ
 			Title   string
 			Burgers []models.Burger
 		}{
-			Title:   "SuperManners",
+			Title:   "BurgerShop.TJ",
 			Burgers: list,
 		}
 
