@@ -20,6 +20,18 @@ func NewBurgersSvc(pool *pgxpool.Pool) *BurgersSvc {
 	return &BurgersSvc{pool: pool}
 }
 
+func (service *BurgersSvc) InitDB() error {
+	conn, err := service.pool.Acquire(context.Background())
+	if err != nil {
+		return errors1.ApiError("can't init db: ", err)
+	}
+	_, err = conn.Query(context.Background(), services.BurgersDDL)
+	if err != nil {
+		return errors1.ApiError("can't init db: ", err)
+	}
+	return nil
+}
+
 func (service *BurgersSvc) BurgersList() (list []models.Burger, err error) {
 	list = make([]models.Burger, 0)
 	conn, err := service.pool.Acquire(context.Background())

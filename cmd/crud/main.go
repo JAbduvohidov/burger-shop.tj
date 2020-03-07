@@ -59,6 +59,10 @@ func start(addr string, dsn string) {
 		panic(err)
 	}
 	burgersSvc := burgers.NewBurgersSvc(pool)
+	err = burgersSvc.InitDB()
+	if err != nil {
+		panic(err)
+	}
 	server := app.NewServer(
 		router,
 		pool,
